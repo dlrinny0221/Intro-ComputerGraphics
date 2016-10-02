@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+		<title>Gasket Interaction</title>
+		
+		<script id="vertex-shader" type="x-shader/x-vertex">
+			attribute vec4 vPosition;
+			//uniform float theta;
+			//varying vec4 fColor;
+			
+			void main(){
+				//fColor = vec4( 0.302 * vPosition.y + 0.453, 0.604 * vPosition.y + 0.502, 0.169 * vPosition.y + 0.112, 1.0); 
+			    gl_Position = vPosition;
+				
+			    /*float s = sin( theta );
+			    float c = cos( theta );
+			
+			    gl_Position.x = -s * vPosition.x + c * vPosition.y;
+			    gl_Position.y =  s * vPosition.y + c * vPosition.x;
+			    gl_Position.z = 0.0;
+			    gl_Position.w = 1.0; */
+			}
+		</script>
+		
+		<script id="fragment-shader-red" type="x-shader/x-fragment">
+			precision mediump float;
+			
+			void main(){
+			    gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+			}
+		</script>
+		
+		<script id="fragment-shader-green" type="x-shader/x-fragment">
+			precision mediump float;
+			
+			void main(){
+			    gl_FragColor = vec4( 0.0, 1.0, 0.0, 1.0 );
+			}
+		</script>
+		
+		<script id="fragment-shader-blue" type="x-shader/x-fragment">
+			precision mediump float;
+			
+			void main(){
+			    gl_FragColor = vec4( 0.0, 0.0, 1.0, 1.0 );
+			}
+		</script>
+		
+		<script id="fragment-shader-orange" type="x-shader/x-fragment">
+			precision mediump float;
+			
+			void main(){
+			    gl_FragColor = vec4( 1.0, 0.549, 0.0, 1.0 );
+			}
+		</script>
+		
+		<script id="fragment-shader-yellow" type="x-shader/x-fragment">
+			precision mediump float;
+			
+			void main(){
+			    gl_FragColor = vec4( 0.9804, 0.9373, 0.2706, 1.0 );
+			}
+		</script>
+		
+		
+		<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+		<script type="text/javascript" src="../Common/initShaders.js"></script>
+		<script type="text/javascript" src="../Common/MV.js"></script>
+		<script type="text/javascript" src="gasketInteraction.js"></script>
+	</head>   
+	
+	
+	<body>
+		<div>
+		Subdivisions 1 <input id="slider" type="range"
+		 min="1" max="9" step="1" value="3" />
+		 9
+		
+		</br></br>
+		<button id="End">Clear Screen</button>
+		<button id="Start">Start Over</button>
+		<button id="Reset">Reset Shape</button>
+		<button id="Erase">Erase Paint</button></br>
+		
+		</br><strong>
+		Instructions: </strong></br>
+		- Use the buttons and slider above to manipulate the gasket. </br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -Use the buttons to clear the screen or start the game again.</br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -Use the slider to change the number times of subdivision.</br>
+		- Click and drag to move the gasket around the canvas. </br>
+		- Press 'r', 'g', or 'b' to change the color of the gasket to red, green, or blue respectively. </br>
+		- Press down the Scroll Wheel to paint; Use the Erase button to clean up paint.</br>
+		</br><strong>Game: LET'S GUESS! </strong></br>
+		HOW MANY SUBDIVISIONS ARE THERE? @_@
+		</div>
+		
+		<!--
+		<select id="Controls" size="3">
+		    <option value="0">Toggle Rotation Direction</option>
+		    <option value="1">Spin Faster</option>
+		    <option value="2">Spin Slower</option>
+		</select> -->
+		<!-- <canvas id = "backLayer" width = "512" height = "512">
+			Oops ... your browser doesn't support the HTML5 canvas element
+		</canvas> -->
+		
+		<canvas id="gl-canvas" width="512" height="512">
+		Oops ... your browser doesn't support the HTML5 canvas element
+		</canvas>
+		</br>
+		<button id="Randomize">Randomize!</button>
+		&nbsp;&nbsp;&nbsp;<input id = "text">
+		<button id = "enter">LET'S GUESS!</button></br>
+		<strong>
+		Game Instructions: </strong></br>
+		- Randomize subdivisions first (gasket will turn RED)</br>
+		- Type in a number and Press ENTER</br>
+		- If it turns GREEN then your guess is right! YAYY</br>
+		- If NOT then your guess is wrong :( Let's try again!</br>
+		&nbsp;&nbsp;&nbsp;&nbsp;Hint: If it turns ORANGE, the number you guessed is too big;</br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If it turns YELLOW, the number you guessed is too small.</br>
+		</div>
+	</body>
+</html>

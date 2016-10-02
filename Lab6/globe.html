@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<title>3D Sphere</title>
+
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+attribute vec4 aPosition;
+attribute vec3 aNormal;
+attribute vec2 aTextureCoord;
+
+varying vec3 N, L, E;
+
+uniform vec4 lightPosition;
+uniform mat4 modelView;
+uniform mat4 projection;
+
+//attribute vec3 vColor;
+//varying vec4 color;
+//uniform vec3 rTheta;
+
+varying vec2 vTextureCoord;
+
+precision mediump float;
+
+void main()
+{
+    vec3 pos = -(modelView * aPosition).xyz;
+    vec3 light = lightPosition.xyz;
+    L = normalize( light - pos );
+    E =  -pos;
+    N = normalize( aNormal.xyz);
+    //gl_Position = projection * modelViewMatrix * vPosition;
+    //gl_Position = projectionMatrix * modelViewMatrix * pos;
+    vTextureCoord = aTextureCoord;
+	gl_Position = projection * modelView * aPosition;
+	//color = vec4(vColor, 1.0);
+    
+}	
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+precision mediump float;
+
+uniform sampler2D textureUnit0;
+
+varying vec2 vTextureCoord;
+
+uniform vec4 ambientProduct;
+uniform vec4 diffuseProduct;
+uniform vec4 specularProduct;
+uniform float shininess;
+varying vec3 N, L, E;
+
+uniform float shading;
+
+
+void
+main()
+{
+    vec4 fColor;
+    
+	vec3 H = normalize( L + E );
+    vec4 ambient = ambientProduct;
+
+    float Kd = max( dot(L, N), 0.0 );
+    vec4  diffuse = Kd*diffuseProduct;
+
+    float Ks = pow( max(dot(N, H), 0.0), shininess );
+    vec4  specular = Ks * specularProduct;
+        
+    if( dot(L, N) < 0.0 ) specular = vec4(0.0, 0.0, 0.0, 1.0);
+
+    fColor = ambient + diffuse + specular;
+    fColor.a = 1.0;
+
+	if(shading == 0.0){
+		gl_FragColor = fColor * texture2D(textureUnit0, vTextureCoord);
+	}else if (shading == 1.0){
+		gl_FragColor = texture2D(textureUnit0, vTextureCoord);
+	}
+}
+</script>
+<strong>3D Sphere</strong></br>
+<strong>Instructions: </strong></br>
+- Use the buttons below to change the textures.</br>
+- Press 'a' 'd' 'w' 's' 'r' 'f' keys to look left and right, move forward and back, or look up and down respectively.</br>
+- Press 'u' or 'j' key to move the light forward or back respectively.</br>
+- Press 'h' or 'k' key to move the light left or right respectively.</br>
+- Press 'o' or 'l' key to move the light up or down respectively.</br>
+- Use Mipmapping & Interpolation ON/OFF buttons below to see the different effects.</br>
+- Use RESET button to change everything back to the original setting.</br></br>
+
+<!-- UI -->
+<button id = "NO">No Texture</button>
+<button id = "CHECKER">CheckerBoard</button>
+<button id = "EARTH"> EARTH </button>
+<button id = "MOON"> MOON </button>
+<button id = "SUN"> SUN </button></br>
+
+<button id = "ON">Lighting ON</button>
+<button id = "OFF"> Lighting OFF </button></br>
+
+<button id = "Mipmapping & Interpolation ON"> Mipmapping & Interpolation ON </button>
+<button id = "Mipmapping & Interpolation OFF"> Mipmapping & Interpolation OFF </button>
+
+</br>
+<button id = "RESET"> RESET </button>
+
+<p></p>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="globe.js"></script>
+</head>   
+
+
+<body>
+<canvas id="gl-canvas" width="512" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</body>
+</html>
